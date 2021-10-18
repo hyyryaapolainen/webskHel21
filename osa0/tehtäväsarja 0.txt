@@ -1,0 +1,37 @@
+0.1-0.3 Mozillan tutoriaalit luettu!
+
+--------------------
+
+0.4
+--------------------
+Selain lähettää HTTP GET-pyynnön 
+-> Saa HTML-koodin
+HTML-koodista
+-> Pyydetään main.css ja main.js
+
+Selain jäsentää sivun HTML (rakenne) ja css (ulkoasu)
+ja alkaa ajaa JavaScriptiä joka pyytää json-datan palvelimelta
+
+-> json-datan perusteella tapahtumankäsittelijä renderöi
+muistiinpanot näytölle
+
+Nappulasta painamalla lähettää POST pyynnön johon tulee 
+vastaus 302 koodilla joka uudelleenohjaa pyynnön /notes
+osoitteeseen
+tästä johtuen javascriptissä oleva tarkistus huomaa
+notes sisällön muuttuvan ja lataa sivun uudestaan
+
+0.5 
+--------------------
+SPA sovelluksessa JavaScript käyttää DOM-apia 
+ja rakentaa notes datan sisällöstä HTML elementtejä joista
+sivu koostuu
+Näin ollen postatessa selain suorittaa javascriptiä valmiiksi
+jolloin notes lisäykset lisätään HTML formaattiin ajonaikaisesti
+
+0.6
+--------------------
+Käyttäjä lähettää nappia painamalla post pyynnön
+-> Palvelin tallentaa sessiomuistiin notes [] listaan uuden muistiinpanon
+-> redrawNotes() päivittää sivun uuden muistiinpanon kanssa
+-> sendtoServer tallentaa uuden muistiinpanon palvelimelle jotta toiset käyttäjät voivat nähdä sen
