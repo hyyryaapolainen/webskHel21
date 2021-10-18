@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 const Number = ({name, number}) => (
   <div>
   <p>{name} {number}</p>
-
   </div>
 )
 const Phonebook = ({list, filter}) => (
