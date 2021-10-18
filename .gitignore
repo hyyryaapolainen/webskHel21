@@ -12,3 +12,7 @@ yarn-debug.log*
 yarn-error.log*
 /.changelog
 .npm/
+./osa1/public
+./osa1/src
+./package-lock.json
+./package.json
