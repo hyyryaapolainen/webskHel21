@@ -91,3 +91,13 @@ const App = () => {
 }
 
 export default App
+
+
+/*
+    "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "server": "json-server -p3001 --watch db.json"
+*/
