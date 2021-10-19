@@ -19,6 +19,7 @@ const CountryFull = ({country}) => {
     .then(response => {
       setWeather(response.data)
     })
+    .catch(setWeather(undefined))
   }, [])
   return(
   <div>
@@ -29,10 +30,14 @@ const CountryFull = ({country}) => {
     <h2>languages</h2>
     {Object.values(country.languages).map((a, i) => <li key={i}>{a}</li>)}
     <img width="200" height="200" src={country.coatOfArms.png} alt="coat of arms"></img>
+    {weather != undefined ?   
+    <div>
     <h2>{`Weather in ${country.capital}`}</h2>
     <p>temperature F {weather.main.temp}</p>
     <p>feelslike F {weather.main.feels_like}</p>
-    <p>wind {weather.wind.speed} m/s</p>
+    <p>wind {weather.wind.speed} m/s</p></div> 
+    :<p>No weather info!</p>
+    }
   </div>
 )}
 const DisplayField = ({list, filter, onClick}) => {
