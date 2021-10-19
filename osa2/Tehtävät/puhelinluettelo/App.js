@@ -1,18 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import puhelinService from './services/puhelin'
 
-const Number = ({name, number}) => (
+const Number = ({name, number, onDelete}) => (
   <div>
   <p>{name} {number}</p>
+  <button onClick={onDelete}>Delete</button>
   </div>
 )
-const Phonebook = ({list, filter}) => (
+const Phonebook = ({list, filter, onDelete}) => (
   <div>
   <h2>Numbers</h2>  
   {list.filter(person => person.name
     .toLowerCase()
     .startsWith(filter.toLowerCase()))
     .map((person, i) =>
-      <Number key={i} name={person.name} number={person.number}/>)}
+      <Number key={i} name={person.name} number={person.number} onDelete={(id) => onDelete(id)}/>)}
   </div>
 )
 
@@ -33,29 +35,47 @@ const Field = ({onChange, fieldName, value}) => {
     )
 }
 const App = () => {
+
   const addNewNumber = (event) =>
   {
     event.preventDefault()
+    const newEntry = {name: newName, number: newNumber}
     if (persons.filter(a => a.name === newName).length > 0)
     {
       alert(`${newName} is already added to phonebook`)
     }
     else{
-    setPersons(persons.concat({name: newName, number: newNumber}))
+    puhelinService
+      .create(newEntry)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+      })
     setNewName('')
     setNewNumber('')
     }
   }
-  const [ persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ]) 
+  const deleteNumber = (id) =>
+  { 
+    puhelinService
+    .remove(id)
+    .then(response => {
+      setPersons(persons.concat(response.data))
+    })
+  setNewName('')
+  setNewNumber('')
+  }
+
+  const [ persons, setPersons] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
-  
+  useEffect(() => {
+    puhelinService
+      .getAll()
+      .then(response => {
+        setPersons(response.data)
+      })
+  }, [])
   const handleFieldChange = (event) => {
     setNewName(event.target.value)
   }
@@ -85,7 +105,7 @@ const App = () => {
       value={filter}/>
       <Form fields={fields} 
       onSubmit={(event) => addNewNumber(event)}/>
-      <Phonebook list={persons} filter={filter}/>
+      <Phonebook list={persons} filter={filter} onDelete={(id) => deleteNumber(id)}/>
       </div>
   )
 }
