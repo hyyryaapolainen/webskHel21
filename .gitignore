@@ -17,3 +17,4 @@ yarn-error.log*
 ./osa1/src
 ./package-lock.json
 ./package.json
+.basefolder
