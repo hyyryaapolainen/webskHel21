@@ -4,7 +4,7 @@
 # Task status
 ## Part 1 - Done!
 ## Part 2 - Done!
-## Part 3 - 3.1-3.6 done
+## Part 3 - 3.7-3.8 done!
 ## Part 4 - Not started
 ## Part 5 - Not started
 ## Part 6 - Not started 
