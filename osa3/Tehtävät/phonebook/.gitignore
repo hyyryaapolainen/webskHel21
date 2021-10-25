@@ -1,0 +1,8 @@
+.puhFront/node_modules
+.puhFront/build
+.puhFront/public
+.puhFront/.gitignore
+.puhBack/node_modules
+.puhBack/build
+.puhBack/public
+.puhBack/.gitignore
