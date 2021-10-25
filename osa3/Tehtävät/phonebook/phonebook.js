@@ -1,6 +1,11 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 app.use(express.json())
+morgan.token('responseJSON', function (req, res) 
+{return JSON.stringify(res.person)})
+const morganL = morgan(':method :url :status - :response-time ms :responseJSON')
+app.use(morganL)
 let persons = [
       {
         "name": "Arto Hellas",
@@ -76,9 +81,9 @@ app.get('/api/persons/:id', (request, response) => {
     return Math.floor(Math.random() * 2000)
   }
   
-  app.post('/api/persons', (request, response) => {
+  app.post('/api/persons', (request, response) =>{
     const body = request.body
-    console.log(body)
+    
     if (!body.name) {
       return response.status(400).json({ 
         error: 'content missing' 
@@ -103,9 +108,8 @@ app.get('/api/persons/:id', (request, response) => {
       date: new Date(),
       id: generateId()
     }
-  
     persons = persons.concat(person)
-  
+    console.log(JSON.stringify(person))
     response.json(person)
   })
 
