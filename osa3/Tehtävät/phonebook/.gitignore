@@ -3,3 +3,5 @@
 .puhFront/public
 .puhFront/.gitignore
 .puhBack/node_modules
+.puhBack/.env
+.puhBack/build
