@@ -88,10 +88,11 @@ const App = () => {
         {
           const id = personCheck[0].id
           puhelinService
-          .getAll
+          .getAll()
           .then(response=> {
            setPersons(response.data) 
           })
+          puhelinService
           .update(id, newEntry)
           .then(returnedNmb => {
             setPersons(persons.map(p => p.id !== returnedNmb.data.id ? p : returnedNmb.data))
@@ -113,7 +114,7 @@ const App = () => {
         setPersons(persons.concat(response.data))
         setNoti(`${newEntry.name}Added number!`, 1)
       })
-      .catch(error => {setNoti(`${error}Adding number failed`, 0)})
+      .catch(error => {console.log(error);setNoti(`Adding number failed ${error}`, 0)})
     setNewName('')
     setNewNumber('')
     }
@@ -129,7 +130,7 @@ const App = () => {
         setNoti(`Deleted ${personToDelete}'s number!`, 1)
         setPersons(persons.filter(a => a.id !== id))
       })
-      .catch(error=>{setNoti('Deleting number failed', 0)})
+      .catch(error=>{setNoti(`Deleting number failed ${error}`, 0)})
       puhelinService
       .getAll()
       .then(response => {

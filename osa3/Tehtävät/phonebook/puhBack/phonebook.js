@@ -4,9 +4,10 @@ const morgan = require('morgan')
 const cors = require('cors')
 const app = express()
 const Person = require('./models/people')
+const { request } = require('express')
+app.use(express.static(__dirname+ '/build'))
 
 app.use(express.json())
-app.use(express.static(__dirname+ '/build'))
 app.use(cors())
 morgan.token('responseJSON', function (req, res) 
 {return JSON.stringify(res.person)})
@@ -60,16 +61,17 @@ let persons = [
       }
     ]
 
-app.get('/api/persons/:id', (request, response) => {
-    Person.findById(request.params.id).then(person =>
-      {
+app.get('/api/persons/:id', (request, response, next) => {
+    Person.findById(request.params.id)
+    .then(person =>{
       if (person) {
         response.json(person)
       } else {
         response.status(404).end()
       }
-    
-    })})
+    })
+    .catch(error => next(error))
+    })
   app.get('/api/persons', (req, res) => {
     Person.find({}).then(people => {
       res.json(people)
@@ -79,13 +81,22 @@ app.get('/api/persons/:id', (request, response) => {
   app.get('/api/info', (req, res) => {
       
   res.writeHead(200, { 'Content-Type': 'text/plain' })
-  res.end(`Phonebook has ${persons.length} numbers on ${new Date()}`)
+  Person.find({}).then(people => {
+    res.end(`Phonebook has ${people.length} numbers on ${new Date()}`)
   })
-  app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(note => note.id !== id)
-    response.status(204).end()
   })
+  app.delete('/api/persons/:id', (request, response, next) => {
+    Person.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
+  })
+  const numberAlreadyDeleted = (error,request,response, next) => {
+    console.error(error.message)
+    return response.status(404).send({error: 'number already removed'})
+  }
+  app.use(numberAlreadyDeleted)
 
   const generateId = () => {
     return Math.floor(Math.random() * 2000)
@@ -95,8 +106,14 @@ app.get('/api/persons/:id', (request, response) => {
     const body = request.body
     
     if (!body.name) {
-      return response.status(400).json({ 
+      return response.status(555).json({ 
         error: 'content missing' 
+      })
+    }
+    if (!Number.isInteger(parseInt(body.number)))
+    {
+      return response.status(690).json({ 
+        error: 'not a number' 
       })
     }
     if(persons.find(a => a.name === body.name))
@@ -111,7 +128,6 @@ app.get('/api/persons/:id', (request, response) => {
           error: 'content missing' 
         })
       }
-  
     const person = new Person({
       name: body.name,
       number: body.number || "0000000000",
@@ -122,6 +138,29 @@ app.get('/api/persons/:id', (request, response) => {
       response.json(savedInfo)
     })
   })
+  app.put('/api/persons/:id', (request, response, next) => {
+    const body = request.body
+    const person = {
+      name: body.name,
+      number: body.number,
+    }
+
+    Person.findByIdAndUpdate(request.params.id, person, {new: true})
+      .then(updatedPerson => {
+        response.json(updatedPerson)
+      })
+      .catch(error => next(error))
+  })
+  const errorHandler = (error, request, response, next) =>
+  {
+    if(error.name ==='CastError')
+    {
+      return response.status(400).send({ error: 'malformatted id' })
+    }
+    next(error)
+  }
+
+  app.use(errorHandler)
 
   const PORT = process.env.PORT
   app.listen(PORT, () => {
