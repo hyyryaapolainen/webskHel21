@@ -114,7 +114,7 @@ const App = () => {
         setPersons(persons.concat(response.data))
         setNoti(`${newEntry.name}Added number!`, 1)
       })
-      .catch(error => {console.log(error);setNoti(`Adding number failed ${error}`, 0)})
+      .catch(error => {setNoti(`Adding number failed: ${error.response.data.error}`, 0)})
     setNewName('')
     setNewNumber('')
     }
