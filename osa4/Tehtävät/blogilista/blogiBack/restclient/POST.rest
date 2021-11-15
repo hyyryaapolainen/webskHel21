@@ -1,9 +1,9 @@
-POST http://localhost:3003/api/blogs
+POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
-{
-    "title": "ensimmäinen blogi posti",
-	"author": "L7034",
-	"url": "Skippyalternative",
-	"likes": 10
-}
+    {
+        "title": "Toinen blogi posti",
+        "author": "L7034",
+        "url": "Skippyprogressive",
+        "likes": 25
+    }   
