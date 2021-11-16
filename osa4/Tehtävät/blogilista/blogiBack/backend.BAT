@@ -7,3 +7,6 @@ call npm install express
 call npm install mongoose
 call npm install dotenv
 call npm install cors
+call npm install express-async-errors
+call npm install bcrypt
+call npm install mongoose-unique-validator

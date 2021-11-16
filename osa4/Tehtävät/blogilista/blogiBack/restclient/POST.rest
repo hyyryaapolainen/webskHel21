@@ -1,9 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
-    {
-        "title": "Toinen blogi posti",
-        "author": "L7034",
-        "url": "Skippyprogressive",
-        "likes": 25
-    }   
+  {
+      "title": "Testi blogi posti",
+      "author": "Testi",
+      "url": "Tester",
+      "likes": 10,
+      "userId": "61939f5aefe5c5b8fd99e6d8"
+  } 
