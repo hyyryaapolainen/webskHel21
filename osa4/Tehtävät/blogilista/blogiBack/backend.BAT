@@ -10,3 +10,4 @@ call npm install cors
 call npm install express-async-errors
 call npm install bcrypt
 call npm install mongoose-unique-validator
+call npm install jsonwebtoken

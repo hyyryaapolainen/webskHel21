@@ -32,7 +32,11 @@ const usersInDb = async () => {
   const users = await User.find({})
   return users.map(u => u.toJSON())
 }
+const rootUser = {
+    username: 'base',
+    password: 'sekret'
+  }
 
 module.exports = {
-  initialBlogs, nonExistingId, blogsInDb, usersInDb
+  initialBlogs, nonExistingId, blogsInDb, usersInDb, rootUser
 }
