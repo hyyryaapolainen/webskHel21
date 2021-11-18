@@ -1,4 +1,2 @@
-# Run very cool .BAT file for NPM installs required for this part
-
-## .BAT file will run npm installs for bunch of stuff
+# .BAT contains which npm installs have been ran for visual clarity
 
