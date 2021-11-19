@@ -11,6 +11,14 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [notiMessage, setNotiMessage] = useState(null)
+
+  const setNoti = (content, id) => {
+    setNotiMessage({c: content,id: id})
+    setTimeout(() => {
+      setNotiMessage(null)
+    }, 1000)
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -25,9 +33,10 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      setNoti("Logged in!", 1)
     } catch (exception) {
-      setTimeout(() => {
-      }, 5000)
+      console.log(exception.response)
+      setNoti(exception.response.data.error,0)
     }
   }
   const handleLogOut = (event) => {
@@ -36,18 +45,65 @@ const App = () => {
     setUsername('')
     setPassword('')
     window.localStorage.clear()
+    setNoti("Logged out!", 1)
   }
   const handlePost = async (event) => {
     event.preventDefault()
-    await blogService.create({
-      title: title,
-      author: author,
-      url: url})
-    const refblogs = await blogService.getAll()
-    setBlogs(refblogs)
-    setAuthor('')
-    setTitle('')
-    setUrl('')
+    try {
+      const newBlog = await blogService.create({
+        title: title,
+        author: author,
+        url: url})
+      const refblogs = await blogService.getAll()
+      setBlogs(refblogs)
+      setAuthor('')
+      setTitle('')
+      setUrl('')
+      setNoti(`${newBlog.title} added to your blogs!`, 1)
+    }
+    catch(exception)
+    {
+      setNoti(exception.response.data.error, 0)
+    }
+  }
+  const Notification = ({ message }) => {
+    const errorStyle = {
+      color: 'red',
+      backGround: 'pink',
+      fontSize: '20px',
+      borderStyle: 'solid',
+      borderRadius: '5px',
+      padding: '10px',
+      marginBottom: '10px'
+    }
+    const successStyle = {
+      color: 'green',
+      backGround: 'lightgreen',
+      fontSize: '20px',
+      borderStyle: 'solid',
+      borderRadius: '5px',
+      padding: '10px',
+      marginBottom: '10px'
+    }
+    
+    if (message === null) {
+      return null
+    }
+    if (message.id === 0)
+    {
+      return (
+        <div style={errorStyle}>
+          {message.c}
+        </div>
+      )
+    }
+    else{
+      return (
+        <div style={successStyle}>
+          {message.c}
+        </div>
+      )
+    }
   }
   const blogForm = () => (
     <form onSubmit={handlePost}>
@@ -122,6 +178,7 @@ const App = () => {
   
   return (
     <div>
+<Notification message={notiMessage} />
         {user === null ? 
         <div>
         <h2>Log in to application!</h2>

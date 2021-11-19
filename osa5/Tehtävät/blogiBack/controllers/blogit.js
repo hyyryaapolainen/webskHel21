@@ -40,11 +40,10 @@ blogRouter.post("/", middleware.userExtractor,async (request, response, next) =>
 		const savedBlog = await newBlog.save()
 		user.blogs = user.blogs.concat(savedBlog._id)
 		await user.save()
-
 		response.json(savedBlog.toJSON())
 	}
 	else{
-		response.status(400).end()
+		response.status(400).json({error: 'Missing url or title'})
 	}
 })
 

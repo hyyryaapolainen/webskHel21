@@ -6,6 +6,6 @@
 ## Part 2 - Done!
 ## Part 3 - Done!
 ## Part 4 - Done! 
-## Part 5 - Started!
+## Part 5 - 5.4 done!
 ## Part 6 - Not started 
 ## Part 7 - Not started
